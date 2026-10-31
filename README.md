@@ -129,3 +129,7 @@ Sau khi triển khai health router, kiểm tra backend tại http://localhost:30
 
 Build: chạy npm run build trong từng thư mục. Backend dùng npm start để chạy dist;
 frontend dùng npm run preview để xem bản build.
+
+## Tài liệu
+
+- [Sơ đồ database](docs/database-diagram.md)
