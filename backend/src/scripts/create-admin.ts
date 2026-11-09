@@ -36,10 +36,11 @@ const createAdmin = async () => {
     );
     if (!result.rowCount) {
       console.error("username have been registered before");
+      return;
     }
     console.log("Admin created successfully:", result.rows[0]);
   } catch (err) {
-    console.error("Không thể tạo tài khoản quản lý:", err);
+    console.error("cannot create manager account:", err);
     process.exitCode = 1;
   } finally {
     await pool.end();
