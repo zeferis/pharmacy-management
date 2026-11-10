@@ -1,16 +1,27 @@
-import type { Request, Response, NextFunction } from "express";
+import type { ErrorRequestHandler } from "express";
 
-const errorHandler = (
-  err: Error,
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+const errorHandler: ErrorRequestHandler = (err, _req, res, next) => {
   if (res.headersSent) {
     next(err);
     return;
   }
-  console.error(err);
-  return res.status(500).json({ message: "Serve Error" });
+
+  if (
+    err instanceof SyntaxError &&
+    "type" in err &&
+    err.type === "entity.parse.failed"
+  ) {
+    res.status(400).json({
+      message: "Invalid JSON body",
+    });
+    return;
+  }
+
+  console.error("Request failed:", err);
+
+  res.status(500).json({
+    message: "Internal server error",
+  });
 };
+
 export default errorHandler;

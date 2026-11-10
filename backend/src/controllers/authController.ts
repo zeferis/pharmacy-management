@@ -17,17 +17,17 @@ export const login = async (req: Request, res: Response) => {
     username,
   ]);
   if (!result.rowCount) {
-    return res.status(401).json({ message: "you have not registered yet" });
+    return res.status(401).json({ message: "Invalid username or password" });
   }
   const user = result.rows[0];
   if (!user || !user.is_active) {
     return res.status(401).json({
-      message: "Invalid username or account have been locked",
+      message: "Invalid username or password",
     });
   }
   const isMatch = await bcrypt.compare(password, user.password_hash);
   if (!isMatch) {
-    return res.status(401).json({ message: "wrong password" });
+    return res.status(401).json({ message: "Invalid username or password" });
   }
   const secret = process.env.JWT_SECRET;
   if (!secret) {
